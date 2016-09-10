@@ -1,0 +1,11 @@
+<%= simple_form_for @ideas do |ide| %>
+<div>
+<%= ide.input :title %>
+</div>
+<div>
+<%= ide.input :body %>
+<%= ide.input :image %>
+
+</div>
+<%= ide.submit class:"btn btn-danger" %>
+<% end %>

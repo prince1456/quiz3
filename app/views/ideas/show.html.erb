@@ -1,0 +1,43 @@
+<div class="row">
+<div class="col-sm-8 blog-main">
+    <div class="blog-post">
+      <h2 class="blog-post-title"><%= @ideas.title %></h2>
+        <p class="blog-post-meta"><%= @ideas.created_at %><a href="#"><%= @idea.user.id %></a></p>
+    </div>
+
+<p><%= @idea.body %></p>
+<%  if @idea.image.present? %>
+    <%= image_tag @idea.image.url(:large) %>
+    <% end %>
+</div>
+  <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module sidebar-module-inset">
+
+      <% if can? :edit, @ideas %>
+      <%= link_to "Edit", edit_idea_path(@ideas) %>
+      <% end %>
+      <% if can? :destroy, @ideas %>
+        <%= link_to "Delete", idea_path(@ideas), method: :delete, data: {confirm: "Are you sure?"} %>
+      <% end %>
+        (<%= pluralize @ideas.likes.count, "like" %>)
+        (<%= pluralize @ideas.memberships.count, "Memeber" %>)
+        <% @ideas.memberships.each do |memebrship| %>
+        <p> Name of Member: <%= memebrship.user.first_name %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<hr>
+<div>
+<% @ideas.comments.each do |comm| %>
+
+<p><%= comm.body %></p>
+<% end %>
+
+<%= form_for [@ideas, @comment] do |comment| %>
+<div class="form-group">
+<%= comment.label :body %>
+<%= comment.text_area :body, class: "form-control" %>
+<%= comment.submit %>
+<% end %>
+<div>

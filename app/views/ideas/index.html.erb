@@ -1,0 +1,44 @@
+
+
+
+<% @ideas.each do |ide| %>
+
+<h2><%= link_to ide.title, idea_path(ide) %></h2>
+<br>
+<div class="left">
+<%= raw(ide.body) %>
+</div>
+<div class="full-name">
+by <%= ide.user.full_name %>
+</div>
+<div class="btn-like">
+  <% if can? :like, ide %>
+<% if ide.like_for(current_user).present? %>
+    <%= button_to "un-like", idea_like_path(ide, ide.likes), method: :delete, class: "btn btn-dd btn-default"%>
+  <% else %>
+    <%= button_to "Like", idea_likes_path(ide), method: :post, class: "btn btn-dd btn-default" %>
+  <% end %>
+  <% else %>
+  like
+  <% end %>
+  <% if can? :membership, ide %>
+  <% if ide.membership_for(current_user).present? %>
+  <%= button_to "Leave", idea_membership_path(ide, ide.memberships), method: :delete, class: "btn btn-dd btn-default"   %>
+  <% else %>
+  <%= button_to "Join", idea_memberships_path(ide), method: :post, class: "btn btn-dd btn-default"%>
+  <% end %>
+<%   else  %>
+membership
+<% end %>
+</div>
+<div class="likes">
+  (<%= pluralize ide.likes.count, "like" %>)
+  |
+  (<%= pluralize ide.memberships.count, "member" %>)
+<div>
+  <br>
+<hr>
+
+
+
+<% end %>
